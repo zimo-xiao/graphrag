@@ -38,7 +38,7 @@ def build_text_unit_context(
     current_context_text = f"-----{context_name}-----" + "\n"
 
     # add header
-    header = ["id", "text"]
+    header = ["id", "text", "document_ids", "entity_ids", "relationship_ids", "covariate_ids"]
     attribute_cols = (
         list(text_units[0].attributes.keys()) if text_units[0].attributes else []
     )
@@ -53,6 +53,10 @@ def build_text_unit_context(
         new_context = [
             unit.short_id,
             unit.text,
+            str(unit.document_ids),
+            str(unit.entity_ids),
+            str(unit.relationship_ids),
+            str(unit.covariate_ids),
             *[
                 str(unit.attributes.get(field, "")) if unit.attributes else ""
                 for field in attribute_cols

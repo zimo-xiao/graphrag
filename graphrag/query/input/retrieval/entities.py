@@ -53,7 +53,7 @@ def to_entity_dataframe(
     """Convert a list of entities to a pandas dataframe."""
     if len(entities) == 0:
         return pd.DataFrame()
-    header = ["id", "entity", "description"]
+    header = ["id", "long_id", "entity", "description"]
     if include_entity_rank:
         header.append(rank_description)
     attribute_cols = (
@@ -66,6 +66,7 @@ def to_entity_dataframe(
     for entity in entities:
         new_record = [
             entity.short_id if entity.short_id else "",
+            entity.id,
             entity.title,
             entity.description if entity.description else "",
         ]

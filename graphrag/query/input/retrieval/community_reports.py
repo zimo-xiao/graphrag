@@ -45,7 +45,7 @@ def to_community_report_dataframe(
         return pd.DataFrame()
 
     # add header
-    header = ["id", "title"]
+    header = ["id", "long_id", "title"]
     attribute_cols = list(reports[0].attributes.keys()) if reports[0].attributes else []
     attribute_cols = [col for col in attribute_cols if col not in header]
     header.extend(attribute_cols)
@@ -57,6 +57,7 @@ def to_community_report_dataframe(
     for report in reports:
         new_record = [
             report.short_id if report.short_id else "",
+            report.id if report.id else "",
             report.title,
             *[
                 str(report.attributes.get(field, ""))

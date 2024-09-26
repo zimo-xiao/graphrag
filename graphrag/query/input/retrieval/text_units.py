@@ -29,7 +29,7 @@ def to_text_unit_dataframe(text_units: list[TextUnit]) -> pd.DataFrame:
         return pd.DataFrame()
 
     # add header
-    header = ["id", "text"]
+    header = ["id", "long_id", "text", "document_ids", "entity_ids", "relationship_ids", "covariate_ids"]
     attribute_cols = (
         list(text_units[0].attributes.keys()) if text_units[0].attributes else []
     )
@@ -40,7 +40,12 @@ def to_text_unit_dataframe(text_units: list[TextUnit]) -> pd.DataFrame:
     for unit in text_units:
         new_record = [
             unit.short_id,
+            unit.id,
             unit.text,
+            unit.document_ids,
+            unit.entity_ids,
+            unit.relationship_ids,
+            unit.covariate_ids,
             *[
                 str(unit.attributes.get(field, ""))
                 if unit.attributes and unit.attributes.get(field)

@@ -143,7 +143,7 @@ def to_relationship_dataframe(
     if len(relationships) == 0:
         return pd.DataFrame()
 
-    header = ["id", "source", "target", "description"]
+    header = ["id", "long_id", "source", "target", "description"]
     if include_relationship_weight:
         header.append("weight")
     attribute_cols = (
@@ -156,6 +156,7 @@ def to_relationship_dataframe(
     for rel in relationships:
         new_record = [
             rel.short_id if rel.short_id else "",
+            rel.id,
             rel.source,
             rel.target,
             rel.description if rel.description else "",

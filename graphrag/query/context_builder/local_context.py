@@ -30,7 +30,9 @@ def build_entity_context(
     token_encoder: tiktoken.Encoding | None = None,
     max_tokens: int = 8000,
     include_entity_rank: bool = True,
+    include_document_ids: bool = False,
     rank_description: str = "number of relationships",
+    document_id_description: str = "document IDs",
     column_delimiter: str = "|",
     context_name="Entities",
 ) -> tuple[str, pd.DataFrame]:
@@ -40,9 +42,11 @@ def build_entity_context(
 
     # add headers
     current_context_text = f"-----{context_name}-----" + "\n"
-    header = ["id", "entity", "description"]
+    header = ["id", "long_id", "entity", "description"]
     if include_entity_rank:
         header.append(rank_description)
+    if include_document_ids:
+        header.append(document_id_description)
     attribute_cols = (
         list(selected_entities[0].attributes.keys())
         if selected_entities[0].attributes
@@ -56,11 +60,17 @@ def build_entity_context(
     for entity in selected_entities:
         new_context = [
             entity.short_id if entity.short_id else "",
+            entity.id,
             entity.title,
             entity.description if entity.description else "",
         ]
         if include_entity_rank:
             new_context.append(str(entity.rank))
+        if include_document_ids:
+            new_context.append(
+                str(entity.document_ids) if entity.document_ids else ""
+            )
+
         for field in attribute_cols:
             field_value = (
                 str(entity.attributes.get(field))
